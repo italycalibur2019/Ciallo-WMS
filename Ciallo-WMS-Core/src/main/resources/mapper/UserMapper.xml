@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.italycalibur.ciallo.wms.core.models.mapper.UserMapper">
+    <resultMap id="userWithRolesMap" type="com.italycalibur.ciallo.wms.core.models.entity.User">
+        <id property="id" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="isEnabled" column="is_enabled"/>
+        <collection property="roles" ofType="com.italycalibur.ciallo.wms.core.models.entity.Role">
+            <id property="id" column="rid"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleDesc" column="role_desc"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByUsernameWithRoles"
+            resultType="com.italycalibur.ciallo.wms.core.models.entity.User"
+            resultMap="userWithRolesMap">
+        select
+            u.id as uid,
+            u.username,
+            u.password,
+            u.dept_id,
+            u.company_id,
+            u.is_enabled,
+            r.id as rid,
+            r.role_name,
+            r.role_desc
+        from
+            sys.sys_user u
+            left join
+                sys.sys_user_role ur on u.id = ur.user_id
+            left join
+                sys.sys_role r on ur.role_id = r.id
+        where
+            u.username = #{username}
+    </select>
+</mapper>

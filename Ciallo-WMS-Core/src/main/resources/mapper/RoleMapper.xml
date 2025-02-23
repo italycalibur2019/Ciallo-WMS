@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.italycalibur.ciallo.wms.core.models.mapper.RoleMapper">
+    <resultMap id="roleWithPermissionsMap" type="com.italycalibur.ciallo.wms.core.models.entity.Role">
+        <id property="id" column="rid"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleDesc" column="role_desc"/>
+        <collection property="permissions" ofType="com.italycalibur.ciallo.wms.core.models.entity.Permission">
+            <id property="id" column="pid"/>
+            <result property="permName" column="perm_name"/>
+            <result property="permKey" column="perm_key"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByRoleNameWithPermissions"
+            resultType="com.italycalibur.ciallo.wms.core.models.entity.Role"
+            resultMap="roleWithPermissionsMap">
+        select
+            r.id as rid,
+            r.role_name,
+            r.role_desc,
+            p.id as pid,
+            p.perm_name,
+            p.perm_key
+        from
+            sys.sys_role r
+            left join
+                sys.sys_role_permission rp on r.id = rp.role_id
+            left join
+                sys.sys_permission p on rp.perm_id = p.id
+        where
+            r.role_name = #{roleName}
+    </select>
+</mapper>
