@@ -88,4 +88,5 @@ jwt:
 ## 日志等级
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: trace
+    org.springframework.web: trace

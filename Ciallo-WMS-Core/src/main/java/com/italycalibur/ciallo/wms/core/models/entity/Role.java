@@ -1,18 +1,17 @@
 package com.italycalibur.ciallo.wms.core.models.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * <p>
  * <h1>角色表</h1>
@@ -49,5 +48,5 @@ public class Role extends BaseEntity implements Serializable {
      * 权限集合
      */
     @TableField(exist = false)
-    private List<Permission> permissions;
+    private List<Permission> permissions = new ArrayList<>();
 }

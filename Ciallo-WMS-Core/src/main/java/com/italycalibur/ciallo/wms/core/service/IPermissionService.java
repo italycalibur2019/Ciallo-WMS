@@ -1,7 +1,7 @@
 package com.italycalibur.ciallo.wms.core.service;
 
-import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 
 /**
  * <p>
@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-02-23 15:30:13
  */
 public interface IPermissionService extends IService<Permission> {
-
+    boolean hasPerm(String permKey);
 }

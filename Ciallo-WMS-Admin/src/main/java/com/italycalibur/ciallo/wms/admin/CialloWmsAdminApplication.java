@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.italycalibur.ciallo.wms.core")
+@ComponentScan(basePackages = "com.italycalibur.ciallo.wms")
 @MapperScan(basePackages = "com.italycalibur.ciallo.wms.core.models.mapper")
 public class CialloWmsAdminApplication {
 

@@ -38,4 +38,40 @@ public record Result<T>(Boolean success, Integer code, String message, T data) {
     public String asJsonString() {
         return JSON.toJSONString(this, JSONWriter.Feature.WriteNulls);
     }
+
+    // 新增Builder相关代码
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static final class Builder<T> {
+        private Boolean success = Boolean.TRUE;
+        private Integer code = ResultCode.SUCCESS;
+        private String message = "操作成功";
+        private T data;
+
+        public Builder<T> success(Boolean success) {
+            this.success = success;
+            return this;
+        }
+
+        public Builder<T> code(Integer code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder<T> message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder<T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public Result<T> build() {
+            return new Result<>(success, code, message, data);
+        }
+    }
 }

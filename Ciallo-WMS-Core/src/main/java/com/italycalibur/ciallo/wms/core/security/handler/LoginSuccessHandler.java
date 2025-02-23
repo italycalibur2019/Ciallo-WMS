@@ -37,6 +37,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 构造统一响应格式
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(Result.ok(Map.of("userInfo", userDetails, "token", token)).asJsonString());
+        response.getWriter().write(Result.ok(Map.of("username", userDetails.getUsername(), "token", token)).asJsonString());
     }
 }

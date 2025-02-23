@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author dhr
  * @version 1.0
  * @date 2025-02-23 16:27:45
- * @description: TODO
+ * @description: 自定义认证过滤器
  */
 @Component
 @RequiredArgsConstructor
