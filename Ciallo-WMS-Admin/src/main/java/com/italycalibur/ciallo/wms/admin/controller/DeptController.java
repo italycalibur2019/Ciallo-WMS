@@ -1,5 +1,6 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
+import com.italycalibur.ciallo.wms.core.dto.DeptTree;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.models.entity.Dept;
 import com.italycalibur.ciallo.wms.core.service.IDeptService;
@@ -67,5 +68,12 @@ public class DeptController {
         return deptService.removeById(id)
                 ? Result.<Dept>builder().message("删除成功！").data(null).build()
                 : Result.error("删除失败！");
+    }
+
+    @Operation(summary = "获取部门树形结构")
+    @GetMapping("/deptTree")
+    @PreAuthorize("@permissionServiceImpl.hasPerm('dept:read')")
+    public Result<List<DeptTree>> deptTree() {
+        return Result.<List<DeptTree>>builder().message("查询成功！").data(deptService.deptTree()).build();
     }
 }
