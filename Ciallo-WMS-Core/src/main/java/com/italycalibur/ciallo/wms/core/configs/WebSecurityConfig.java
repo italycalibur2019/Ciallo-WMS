@@ -1,5 +1,6 @@
 package com.italycalibur.ciallo.wms.core.configs;
 
+import com.italycalibur.ciallo.wms.core.configs.properties.IgnoredUrlsProperty;
 import com.italycalibur.ciallo.wms.core.security.MD5PasswordEncoder;
 import com.italycalibur.ciallo.wms.core.security.UserDetailsServiceImpl;
 import com.italycalibur.ciallo.wms.core.security.filter.JwtAuthFilter;
@@ -52,6 +53,9 @@ public class WebSecurityConfig {
     @Resource
     private MD5PasswordEncoder passwordEncoder;
 
+    @Resource
+    private IgnoredUrlsProperty ignoredUrlsProperty;
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -66,7 +70,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**", "/auth/**", "/error").permitAll()
+                        .requestMatchers(ignoredUrlsProperty.getUrls()).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(
