@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2025-02-24 20:59:46
  * @description: 全局异常处理器
+ * 注：目前与springdoc之间有冲突，使用knife4j需要暂时关闭
  */
 @Slf4j
 @RestControllerAdvice

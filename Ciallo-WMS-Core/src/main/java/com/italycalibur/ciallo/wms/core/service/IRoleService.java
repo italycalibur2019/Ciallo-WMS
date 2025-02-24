@@ -1,7 +1,6 @@
 package com.italycalibur.ciallo.wms.core.service;
 
 import com.italycalibur.ciallo.wms.core.models.entity.Role;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @author italycalibur
  * @since 2025-02-23 15:30:13
  */
-public interface IRoleService extends IService<Role> {
+public interface IRoleService extends BaseService<Role> {
 
     boolean assignPerm(Long roleId, List<Long> permIds);
 }

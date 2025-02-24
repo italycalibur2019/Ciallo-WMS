@@ -1,10 +1,10 @@
 package com.italycalibur.ciallo.wms.core.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.italycalibur.ciallo.wms.core.dto.DeptTree;
 import com.italycalibur.ciallo.wms.core.models.entity.Dept;
 import com.italycalibur.ciallo.wms.core.models.mapper.DeptMapper;
 import com.italycalibur.ciallo.wms.core.service.IDeptService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +28,10 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     @Override
     public List<DeptTree> deptTree() {
         // 获取所有部门数据
-        List<Dept> allDepts = this.list();
+        List<Dept> deptList = this.list();
 
         // 创建ID->节点的映射表（使用LinkedHashMap保持顺序）
-        Map<Long, DeptTree> nodeMap = allDepts.stream()
+        Map<Long, DeptTree> nodeMap = deptList.stream()
                 .filter(dept -> dept.getId() != 0L)
                 .collect(Collectors.toMap(
                         Dept::getId,

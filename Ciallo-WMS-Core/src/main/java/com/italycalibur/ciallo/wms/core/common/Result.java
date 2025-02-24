@@ -3,6 +3,7 @@ package com.italycalibur.ciallo.wms.core.common;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
 import com.italycalibur.ciallo.wms.core.constants.ResultCode;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * @description: 统一返回结果
@@ -10,7 +11,11 @@ import com.italycalibur.ciallo.wms.core.constants.ResultCode;
  * @date 2025-02-06 14:26:42
  * @version 1.0
  */
-public record Result<T>(Boolean success, Integer code, String message, T data) {
+@Schema(description = "统一返回结果")
+public record Result<T>(@Schema(description = "是否成功") Boolean success,
+                        @Schema(description = "状态码") Integer code,
+                        @Schema(description = "提示信息") String message,
+                        @Schema(description = "返回数据") T data) {
     public static <T> Result<T> ok(T data) {
         return new Result<>(Boolean.TRUE, ResultCode.SUCCESS, "操作成功", data);
     }
