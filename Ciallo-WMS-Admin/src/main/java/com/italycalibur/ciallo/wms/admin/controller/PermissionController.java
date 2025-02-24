@@ -1,6 +1,7 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.core.common.Result;
+import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 import com.italycalibur.ciallo.wms.core.service.IPermissionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,18 +46,20 @@ public class PermissionController {
     @Operation(summary = "添加权限信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('perm:create')")
-    public Result<Permission> add(@RequestBody Permission dept) {
-        return permissionService.save(dept)
-                ? Result.<Permission>builder().message("添加成功！").data(dept).build()
+    public Result<Permission> add(@RequestBody Permission permission) {
+        permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
+        return permissionService.save(permission)
+                ? Result.<Permission>builder().message("添加成功！").data(permission).build()
                 : Result.error("添加失败！");
     }
 
     @Operation(summary = "修改权限信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('perm:update')")
-    public Result<Permission> update(@RequestBody Permission dept) {
-        return permissionService.updateById(dept)
-                ? Result.<Permission>builder().message("修改成功！").data(dept).build()
+    public Result<Permission> update(@RequestBody Permission permission) {
+        permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
+        return permissionService.updateById(permission)
+                ? Result.<Permission>builder().message("修改成功！").data(permission).build()
                 : Result.error("修改失败！");
     }
 

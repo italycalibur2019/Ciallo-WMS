@@ -78,6 +78,10 @@ mybatis-plus:
       table-prefix: t_, sys_
       # 主键策略
       id-type: ASSIGN_ID
+  # mybatis配置
+  configuration:
+    # 枚举处理器配置
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
 ## jwt 配置
 jwt:
   # 密钥字符串（256位）

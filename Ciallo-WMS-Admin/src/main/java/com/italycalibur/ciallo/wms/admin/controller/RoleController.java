@@ -46,18 +46,18 @@ public class RoleController {
     @Operation(summary = "添加角色信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('role:create')")
-    public Result<Role> add(@RequestBody Role dept) {
-        return roleService.save(dept)
-                ? Result.<Role>builder().message("添加成功！").data(dept).build()
+    public Result<Role> add(@RequestBody Role role) {
+        return roleService.save(role)
+                ? Result.<Role>builder().message("添加成功！").data(role).build()
                 : Result.error("添加失败！");
     }
 
     @Operation(summary = "修改角色信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('role:update')")
-    public Result<Role> update(@RequestBody Role dept) {
-        return roleService.updateById(dept)
-                ? Result.<Role>builder().message("修改成功！").data(dept).build()
+    public Result<Role> update(@RequestBody Role role) {
+        return roleService.updateById(role)
+                ? Result.<Role>builder().message("修改成功！").data(role).build()
                 : Result.error("修改失败！");
     }
 

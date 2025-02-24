@@ -1,24 +1,24 @@
 package com.italycalibur.ciallo.wms.core.models.entity;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.io.Serial;
-import java.io.Serializable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serial;
+import java.io.Serializable;
 /**
  * <p>
  * <h1>权限表</h1>
  * </p>
  *
  * @author italycalibur
- * @since 2025-02-23 15:30:13
+ * @since 2025-02-24 20:31:47
  */
 @Getter
 @Setter
@@ -43,4 +43,60 @@ public class Permission extends BaseEntity implements Serializable {
     @TableField("perm_key")
     @Schema(description = "权限代码，如：user:create")
     private String permKey;
+
+    /**
+     * 菜单类型
+     */
+    @TableField("menu_type")
+    @Schema(description = "菜单类型")
+    @EnumValue
+    private MenuTypeEnum menuType;
+
+    /**
+     * 父级菜单主键
+     */
+    @TableField("parent_id")
+    @Schema(description = "父级菜单主键")
+    private Long parentId;
+
+    /**
+     * 路由路径
+     */
+    @TableField("path")
+    @Schema(description = "路由路径")
+    private String path;
+
+    /**
+     * 组件路径
+     */
+    @TableField("component")
+    @Schema(description = "组件路径")
+    private String component;
+
+    /**
+     * 菜单图标
+     */
+    @TableField("icon")
+    @Schema(description = "菜单图标")
+    private String icon;
+
+    /**
+     * 排序
+     */
+    @TableField("sort")
+    @Schema(description = "排序")
+    private Integer sort;
+
+    /**
+     * 是否显示
+     */
+    @TableField("visible")
+    @Schema(description = "是否显示")
+    private Boolean visible;
+
+    /**
+     * 用来接收前端传递过来的菜单类型字符串
+     */
+    @TableField(exist = false)
+    private String menuTypeStr;
 }

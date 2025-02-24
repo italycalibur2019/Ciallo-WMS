@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.generator.config.querys.PostgreSqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.query.SQLQuery;
+import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -58,12 +59,20 @@ public class CodeGenerator {
                 // 策略配置
                 .strategyConfig(builder -> builder
                         .enableSchema()
-                        .addExclude("sys_user_role", "sys_role_permission")
+                        .addInclude("sys_permission")
                         .addTablePrefix("sys_")
                         .entityBuilder()
                         .enableLombok()
+                        .superClass(BaseEntity.class)
                         .enableTableFieldAnnotation()
+                        .enableFileOverride()
                         .controllerBuilder()
+                        .disable()
+                        .serviceBuilder()
+                        .disableServiceImpl()
+                        .disable()
+                        .mapperBuilder()
+                        .disableMapperXml()
                         .disable()
                 )
                 // 模板引擎配置

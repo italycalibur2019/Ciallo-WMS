@@ -20,7 +20,7 @@ COMMENT ON COLUMN sys.sys_dept.dept_type IS '部门类型，C：总公司 D：�
 COMMENT ON COLUMN sys.sys_dept.create_time IS '数据创建时间';
 COMMENT ON COLUMN sys.sys_dept.update_time IS '数据更新时间';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_dept
 (id, parent_id, dept_name, dept_type, create_time, update_time)
 VALUES(0, 0, '总公司', 'C', '2025-02-23 11:06:04.585', NULL);
@@ -69,7 +69,7 @@ COMMENT ON COLUMN sys.sys_user.is_enabled IS '是否可用';
 COMMENT ON COLUMN sys.sys_user.create_time IS '数据创建时间';
 COMMENT ON COLUMN sys.sys_user.update_time IS '数据更新时间';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_user
 (id, username, "password", dept_id, company_id, is_enabled, create_time, update_time)
 VALUES(1, 'admin', 'ec7805df356b9be271806d5de694c8f0', 101, 1, true, '2025-02-23 11:16:56.253', NULL);
@@ -103,7 +103,7 @@ COMMENT ON COLUMN sys.sys_role.role_desc IS '角色描述';
 COMMENT ON COLUMN sys.sys_role.create_time IS '数据创建时间';
 COMMENT ON COLUMN sys.sys_role.update_time IS '数据更新时间';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_role
 (id, role_name, role_desc, create_time, update_time)
 VALUES(1, 'supAdmin', '超级管理员', '2025-02-23 11:26:57.554', NULL);
@@ -119,72 +119,106 @@ VALUES(4, 'deputyManager', '部门副经理', '2025-02-23 11:26:57.558', NULL);
 
 -- 权限表
 CREATE TABLE sys.sys_permission (
-                                    id int8 NOT NULL,
-                                    perm_name varchar(30) NOT NULL,
-                                    perm_key varchar(50) NOT NULL,
-                                    create_time timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                                    update_time timestamp NULL,
+                                    id int8 NOT NULL, -- 主键
+                                    perm_name varchar(30) NOT NULL, -- 权限名称
+                                    perm_key varchar(50) NOT NULL, -- 权限代码，如：user:create
+                                    create_time timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 数据创建时间
+                                    update_time timestamp NULL, -- 数据更新时间
+                                    menu_type varchar(10) DEFAULT 'BUTTON'::character varying NOT NULL, -- 菜单类型
+                                    parent_id int8 NULL, -- 父级菜单主键
+                                    "path" varchar(100) NULL, -- 路由路径
+                                    component varchar(100) NULL, -- 组件路径
+                                    icon varchar(50) NULL, -- 菜单图标
+                                    sort int4 DEFAULT 0 NULL, -- 排序
+                                    visible bool DEFAULT true NULL, -- 是否显示
                                     CONSTRAINT sys_permission_pk PRIMARY KEY (id),
-                                    CONSTRAINT sys_permission_unique UNIQUE (perm_name)
+                                    CONSTRAINT sys_permission_unique UNIQUE (perm_name),
+                                    CONSTRAINT sys_permission_sys_permission_fk FOREIGN KEY (parent_id) REFERENCES sys.sys_permission(id) ON DELETE RESTRICT
 );
 COMMENT ON TABLE sys.sys_permission IS '权限表';
 
 -- Column comments
+
 COMMENT ON COLUMN sys.sys_permission.id IS '主键';
 COMMENT ON COLUMN sys.sys_permission.perm_name IS '权限名称';
 COMMENT ON COLUMN sys.sys_permission.perm_key IS '权限代码，如：user:create';
 COMMENT ON COLUMN sys.sys_permission.create_time IS '数据创建时间';
 COMMENT ON COLUMN sys.sys_permission.update_time IS '数据更新时间';
+COMMENT ON COLUMN sys.sys_permission.menu_type IS '菜单类型';
+COMMENT ON COLUMN sys.sys_permission.parent_id IS '父级菜单主键';
+COMMENT ON COLUMN sys.sys_permission."path" IS '路由路径';
+COMMENT ON COLUMN sys.sys_permission.component IS '组件路径';
+COMMENT ON COLUMN sys.sys_permission.icon IS '菜单图标';
+COMMENT ON COLUMN sys.sys_permission.sort IS '排序';
+COMMENT ON COLUMN sys.sys_permission.visible IS '是否显示';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(1, '创建部门', 'dept:create', '2025-02-23 11:38:12.422', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(1, '创建部门', 'dept:create', '2025-02-23 11:38:12.422', NULL, 'BUTTON', 101, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(2, '查询部门', 'dept:read', '2025-02-23 11:38:12.424', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(2, '查询部门', 'dept:read', '2025-02-23 11:38:12.424', NULL, 'BUTTON', 101, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(3, '修改部门', 'dept:update', '2025-02-23 11:38:12.425', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(3, '修改部门', 'dept:update', '2025-02-23 11:38:12.425', NULL, 'BUTTON', 101, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(4, '删除部门', 'dept:delete', '2025-02-23 11:38:12.426', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(4, '删除部门', 'dept:delete', '2025-02-23 11:38:12.426', NULL, 'BUTTON', 101, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(5, '创建用户', 'user:create', '2025-02-23 11:39:23.698', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(5, '创建用户', 'user:create', '2025-02-23 11:39:23.698', NULL, 'BUTTON', 102, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(6, '查询用户', 'user:read', '2025-02-23 11:39:23.699', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(6, '查询用户', 'user:read', '2025-02-23 11:39:23.699', NULL, 'BUTTON', 102, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(7, '修改用户', 'user:update', '2025-02-23 11:39:23.700', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(7, '修改用户', 'user:update', '2025-02-23 11:39:23.700', NULL, 'BUTTON', 102, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(8, '删除用户', 'user:delete', '2025-02-23 11:39:23.701', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(8, '删除用户', 'user:delete', '2025-02-23 11:39:23.701', NULL, 'BUTTON', 102, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(9, '创建角色', 'role:create', '2025-02-23 11:40:18.033', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(9, '创建角色', 'role:create', '2025-02-23 11:40:18.033', NULL, 'BUTTON', 103, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(10, '查询角色', 'role:read', '2025-02-23 11:40:18.034', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(10, '查询角色', 'role:read', '2025-02-23 11:40:18.034', NULL, 'BUTTON', 103, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(11, '修改角色', 'role:update', '2025-02-23 11:40:18.035', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(11, '修改角色', 'role:update', '2025-02-23 11:40:18.035', NULL, 'BUTTON', 103, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(12, '删除角色', 'role:delete', '2025-02-23 11:40:18.036', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(12, '删除角色', 'role:delete', '2025-02-23 11:40:18.036', NULL, 'BUTTON', 103, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(13, '创建权限', 'perm:create', '2025-02-23 11:41:04.008', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(13, '创建权限', 'perm:create', '2025-02-23 11:41:04.008', NULL, 'BUTTON', 104, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(14, '查询权限', 'perm:read', '2025-02-23 11:41:04.009', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(14, '查询权限', 'perm:read', '2025-02-23 11:41:04.009', NULL, 'BUTTON', 104, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(15, '修改权限', 'perm:update', '2025-02-23 11:41:04.010', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(15, '修改权限', 'perm:update', '2025-02-23 11:41:04.010', NULL, 'BUTTON', 104, NULL, NULL, NULL, 0, true);
 INSERT INTO sys.sys_permission
-(id, perm_name, perm_key, create_time, update_time)
-VALUES(16, '删除权限', 'perm:delete', '2025-02-23 11:41:04.012', NULL);
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(16, '删除权限', 'perm:delete', '2025-02-23 11:41:04.012', NULL, 'BUTTON', 104, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(0, '目录', '-', '2025-02-24 20:46:41.610', NULL, 'CATALOG', 0, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(101, '部门管理', '-', '2025-02-24 20:48:30.669', NULL, 'SUB_MENU', 1001, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(102, '用户管理', '-', '2025-02-24 20:48:30.670', NULL, 'SUB_MENU', 1001, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(103, '角色管理', '-', '2025-02-24 20:48:30.671', NULL, 'SUB_MENU', 1001, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(104, '权限管理', '-', '2025-02-24 20:48:30.672', NULL, 'SUB_MENU', 1001, NULL, NULL, NULL, 0, true);
+INSERT INTO sys.sys_permission
+(id, perm_name, perm_key, create_time, update_time, menu_type, parent_id, "path", component, icon, sort, visible)
+VALUES(1001, '系统管理', '-', '2025-02-24 20:49:02.473', NULL, 'MAIN_MENU', 0, NULL, NULL, NULL, 0, true);
 
 -- 用户-角色关联表
 CREATE TABLE sys.sys_user_role (
@@ -200,7 +234,7 @@ COMMENT ON TABLE sys.sys_user_role IS '用户-角色关联表';
 COMMENT ON COLUMN sys.sys_user_role.user_id IS '用户主键';
 COMMENT ON COLUMN sys.sys_user_role.role_id IS '角色主键';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_user_role
 (user_id, role_id)
 VALUES(1, 1);
@@ -230,7 +264,7 @@ COMMENT ON TABLE sys.sys_role_permission IS '角色-权限关联表';
 COMMENT ON COLUMN sys.sys_role_permission.role_id IS '角色主键';
 COMMENT ON COLUMN sys.sys_role_permission.perm_id IS '权限主键';
 
--- Add Datas
+-- Add Data
 INSERT INTO sys.sys_role_permission
 (role_id, perm_id)
 VALUES(1, 1);
