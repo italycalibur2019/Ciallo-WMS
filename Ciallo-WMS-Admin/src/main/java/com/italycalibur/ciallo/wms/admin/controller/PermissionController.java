@@ -1,11 +1,13 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
+import com.italycalibur.ciallo.wms.admin.dto.PermissionDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 import com.italycalibur.ciallo.wms.core.service.IPermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,7 @@ public class PermissionController {
     @Operation(summary = "添加权限信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('perm:create')")
-    public Result<Permission> add(@RequestBody Permission permission) {
+    public Result<Permission> add(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.save(permission)
                 ? Result.<Permission>builder().message("添加成功！").data(permission).build()
@@ -56,7 +58,7 @@ public class PermissionController {
     @Operation(summary = "修改权限信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('perm:update')")
-    public Result<Permission> update(@RequestBody Permission permission) {
+    public Result<Permission> update(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.updateById(permission)
                 ? Result.<Permission>builder().message("修改成功！").data(permission).build()

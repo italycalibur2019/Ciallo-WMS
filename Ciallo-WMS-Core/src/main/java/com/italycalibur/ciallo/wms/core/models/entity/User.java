@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -40,6 +41,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
      */
     @TableField("username")
     @Schema(description = "用户名")
+    @NotNull(message = "用户名不能为空")
     private String username;
 
     /**
@@ -47,6 +49,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
      */
     @TableField("password")
     @Schema(description = "密码")
+    @NotNull(message = "密码不能为空")
     private String password;
 
     /**
@@ -54,6 +57,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
      */
     @TableField("dept_id")
     @Schema(description = "所属部门主键")
+    @NotNull(message = "所属部门不能为空")
     private Long deptId;
 
     /**
@@ -61,6 +65,7 @@ public class User extends BaseEntity implements Serializable, UserDetails {
      */
     @TableField("company_id")
     @Schema(description = "所属公司主键")
+    @NotNull(message = "所属公司不能为空")
     private Long companyId;
 
     /**

@@ -1,10 +1,13 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
+import com.italycalibur.ciallo.wms.admin.dto.UserDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.core.service.IUserService;
+import com.italycalibur.ciallo.wms.core.utils.MD5Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +48,8 @@ public class UserController {
     @Operation(summary = "添加用户信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('user:create')")
-    public Result<User> add(@RequestBody User user) {
+    public Result<User> add(@Valid @RequestBody UserDTO user) {
+        user.setPassword(MD5Utils.md5Encode(user.getRawPassword()));
         return userService.save(user)
                 ? Result.<User>builder().message("添加成功！").data(user).build()
                 : Result.error("添加失败！");
@@ -54,7 +58,8 @@ public class UserController {
     @Operation(summary = "修改用户信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('user:update')")
-    public Result<User> update(@RequestBody User user) {
+    public Result<User> update(@Valid @RequestBody UserDTO user) {
+        user.setPassword(MD5Utils.md5Encode(user.getRawPassword()));
         return userService.updateById(user)
                 ? Result.<User>builder().message("修改成功！").data(user).build()
                 : Result.error("修改失败！");

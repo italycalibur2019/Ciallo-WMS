@@ -1,11 +1,13 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
+import com.italycalibur.ciallo.wms.admin.dto.RoleDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.models.entity.Role;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.core.service.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,7 @@ public class RoleController {
     @Operation(summary = "添加角色信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('role:create')")
-    public Result<Role> add(@RequestBody Role role) {
+    public Result<Role> add(@Valid @RequestBody RoleDTO role) {
         return roleService.save(role)
                 ? Result.<Role>builder().message("添加成功！").data(role).build()
                 : Result.error("添加失败！");
@@ -55,7 +57,7 @@ public class RoleController {
     @Operation(summary = "修改角色信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('role:update')")
-    public Result<Role> update(@RequestBody Role role) {
+    public Result<Role> update(@Valid @RequestBody RoleDTO role) {
         return roleService.updateById(role)
                 ? Result.<Role>builder().message("修改成功！").data(role).build()
                 : Result.error("修改失败！");

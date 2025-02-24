@@ -1,11 +1,13 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
-import com.italycalibur.ciallo.wms.core.dto.DeptTree;
+import com.italycalibur.ciallo.wms.admin.dto.DeptDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
+import com.italycalibur.ciallo.wms.core.dto.DeptTree;
 import com.italycalibur.ciallo.wms.core.models.entity.Dept;
 import com.italycalibur.ciallo.wms.core.service.IDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,7 @@ public class DeptController {
     @Operation(summary = "添加部门信息")
     @PostMapping("/add")
     @PreAuthorize("@permissionServiceImpl.hasPerm('dept:create')")
-    public Result<Dept> add(@RequestBody Dept dept) {
+    public Result<Dept> add(@Valid @RequestBody DeptDTO dept) {
         return deptService.save(dept)
                 ? Result.<Dept>builder().message("添加成功！").data(dept).build()
                 : Result.error("添加失败！");
@@ -55,7 +57,7 @@ public class DeptController {
     @Operation(summary = "修改部门信息")
     @PutMapping("/update")
     @PreAuthorize("@permissionServiceImpl.hasPerm('dept:update')")
-    public Result<Dept> update(@RequestBody Dept dept) {
+    public Result<Dept> update(@Valid @RequestBody DeptDTO dept) {
         return deptService.updateById(dept)
                 ? Result.<Dept>builder().message("修改成功！").data(dept).build()
                 : Result.error("修改失败！");

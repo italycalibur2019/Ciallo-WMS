@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.io.Serial;
-import java.io.Serializable;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serial;
+import java.io.Serializable;
 /**
  * <p>
  * <h1>部门表</h1>
@@ -34,6 +35,7 @@ public class Dept extends BaseEntity implements Serializable {
      */
     @TableField("parent_id")
     @Schema(description = "父级部门主键，总公司默认为0")
+    @NotNull(message = "父级部门不能为空")
     private Long parentId;
 
     /**
@@ -41,6 +43,7 @@ public class Dept extends BaseEntity implements Serializable {
      */
     @TableField("dept_name")
     @Schema(description = "部门名称")
+    @NotNull(message = "部门名称不能为空")
     private String deptName;
 
     /**
@@ -48,5 +51,6 @@ public class Dept extends BaseEntity implements Serializable {
      */
     @TableField("dept_type")
     @Schema(description = "部门类型，C：总公司 D：子部门")
+    @Pattern(regexp = "^[C|D]$", message = "无效的部门类型")
     private String deptType;
 }

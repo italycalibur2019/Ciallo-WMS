@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,6 +36,7 @@ public class Role extends BaseEntity implements Serializable {
      */
     @TableField("role_name")
     @Schema(description = "角色名称")
+    @NotNull(message = "角色名称不能为空")
     private String roleName;
 
     /**
@@ -42,6 +44,7 @@ public class Role extends BaseEntity implements Serializable {
      */
     @TableField("role_desc")
     @Schema(description = "角色描述")
+    @NotNull(message = "角色描述不能为空")
     private String roleDesc;
 
     /**

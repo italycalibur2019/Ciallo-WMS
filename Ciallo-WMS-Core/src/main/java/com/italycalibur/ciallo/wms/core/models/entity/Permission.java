@@ -3,7 +3,6 @@ package com.italycalibur.ciallo.wms.core.models.entity;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.italycalibur.ciallo.wms.core.annotation.EnumValid;
 import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +36,7 @@ public class Permission extends BaseEntity implements Serializable {
      */
     @TableField("perm_name")
     @Schema(description = "权限名称")
+    @NotNull(message = "权限名称不能为空")
     private String permName;
 
     /**
@@ -44,6 +44,7 @@ public class Permission extends BaseEntity implements Serializable {
      */
     @TableField("perm_key")
     @Schema(description = "权限代码，如：user:create")
+    @NotNull(message = "权限代码不能为空")
     private String permKey;
 
     /**
@@ -59,6 +60,7 @@ public class Permission extends BaseEntity implements Serializable {
      */
     @TableField("parent_id")
     @Schema(description = "父级菜单主键")
+    @NotNull(message = "父级菜单不能为空")
     private Long parentId;
 
     /**
@@ -95,12 +97,4 @@ public class Permission extends BaseEntity implements Serializable {
     @TableField("visible")
     @Schema(description = "是否显示")
     private Boolean visible;
-
-    /**
-     * 用来接收前端传递过来的菜单类型字符串
-     */
-    @NotNull(message = "菜单类型不能为空")
-    @EnumValid(enumClass = MenuTypeEnum.class, message = "无效的菜单类型")
-    @TableField(exist = false)
-    private String menuTypeStr;
 }
