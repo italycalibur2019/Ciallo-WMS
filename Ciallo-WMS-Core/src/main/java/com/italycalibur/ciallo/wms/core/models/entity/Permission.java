@@ -3,9 +3,11 @@ package com.italycalibur.ciallo.wms.core.models.entity;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.italycalibur.ciallo.wms.core.annotation.EnumValid;
 import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -97,6 +99,8 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * 用来接收前端传递过来的菜单类型字符串
      */
+    @NotNull(message = "菜单类型不能为空")
+    @EnumValid(enumClass = MenuTypeEnum.class, message = "无效的菜单类型")
     @TableField(exist = false)
     private String menuTypeStr;
 }
