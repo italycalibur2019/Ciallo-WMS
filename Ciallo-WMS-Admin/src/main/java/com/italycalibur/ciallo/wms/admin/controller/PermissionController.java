@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Tag(name = "权限管理")
 @RestController
-@RequestMapping("/system/dept")
+@RequestMapping("/system/permission")
 @RequiredArgsConstructor
 public class PermissionController {
     private final IPermissionService permissionService;
