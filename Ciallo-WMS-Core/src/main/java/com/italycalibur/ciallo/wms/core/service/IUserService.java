@@ -3,6 +3,8 @@ package com.italycalibur.ciallo.wms.core.service;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    boolean assignRole(Long userId, List<Long> roleIds);
 }

@@ -68,4 +68,13 @@ public class UserController {
                 ? Result.<User>builder().message("删除成功！").data(null).build()
                 : Result.error("删除失败！");
     }
+
+    @Operation(summary = "给用户分配角色")
+    @PutMapping("/assignRole/{userId}")
+    @PreAuthorize("@permissionServiceImpl.hasPerm('user:update')")
+    public Result<User> assignRole(@PathVariable Long userId, @RequestBody List<Long> roleIds) {
+        return userService.assignRole(userId, roleIds)
+                ? Result.<User>builder().message("分配成功！").data(null).build()
+                : Result.error("分配失败！");
+    }
 }
