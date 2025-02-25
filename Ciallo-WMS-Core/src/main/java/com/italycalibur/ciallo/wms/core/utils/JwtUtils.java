@@ -1,6 +1,7 @@
 package com.italycalibur.ciallo.wms.core.utils;
 
 import com.italycalibur.ciallo.wms.core.configs.properties.JwtTokenProperty;
+import com.italycalibur.ciallo.wms.core.constants.CommonConstants;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author dhr
@@ -24,6 +26,8 @@ import java.util.Date;
 public class JwtUtils {
     @Resource
     private JwtTokenProperty jwtTokenProperty;
+    @Resource
+    private RedisUtils redisUtils;
 
     /**
      * 生成jwt到期时间
@@ -48,12 +52,15 @@ public class JwtUtils {
      * @return String
      */
     public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
                 .expiration(generateExp())
                 .signWith(generateKey())
                 .compact();
+        // redis存储token
+        redisUtils.set(token, token, jwtTokenProperty.getExpireTime() / 1000);
+        return token;
     }
 
     /**
@@ -69,15 +76,28 @@ public class JwtUtils {
         return null;
     }
 
+    /**
+     * 验证令牌有效性
+     * @param token 令牌
+     * @return 有效结果
+     */
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(generateKey()).build().parseSignedClaims(token);
-            return true;
+            if (redisUtils.exists(token) && redisUtils.getExpire(token) > 0) {
+                Jwts.parser().verifyWith(generateKey()).build().parseSignedClaims(token);
+                return true;
+            }
+            return false;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
 
+    /**
+     * 解析令牌中的用户名
+     * @param token 令牌
+     * @return 用户名
+     */
     public String getUsernameFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(generateKey())
@@ -85,5 +105,15 @@ public class JwtUtils {
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
+    }
+
+    /**
+     * 登出给令牌设置黑名单
+     * @param token 令牌
+     */
+    public void addBlackListToken(String token) {
+        if (redisUtils.exists(token)) {
+            redisUtils.rename(token, CommonConstants.BLACK_LIST_TOKEN + token);
+        }
     }
 }
