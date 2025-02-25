@@ -5,8 +5,8 @@ import com.italycalibur.ciallo.wms.core.constants.CommonConstants;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author dhr
@@ -23,11 +22,10 @@ import java.util.concurrent.TimeUnit;
  * @description: jwt工具类
  */
 @Component
+@RequiredArgsConstructor
 public class JwtUtils {
-    @Resource
-    private JwtTokenProperty jwtTokenProperty;
-    @Resource
-    private RedisUtils redisUtils;
+    private final JwtTokenProperty jwtTokenProperty;
+    private final RedisUtils redisUtils;
 
     /**
      * 生成jwt到期时间
