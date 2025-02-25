@@ -1,6 +1,7 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.PermissionDTO;
+import com.italycalibur.ciallo.wms.admin.vo.PermissionVO;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.dto.MenuTree;
 import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
@@ -33,45 +34,45 @@ public class PermissionController {
     @Operation(summary = "获取权限列表")
     @GetMapping("/list")
     @PreAuthorize("@ps.hasPerm('perm:read')")
-    public Result<List<Permission>> list() {
-        return Result.<List<Permission>>builder().message("查询成功！").data(permissionService.list()).build();
+    public Result<List<PermissionVO>> list() {
+        return Result.<List<PermissionVO>>builder().message("查询成功！").data(permissionService.listAll()).build();
     }
 
     @Operation(summary = "根据主键获取权限信息")
     @GetMapping("/get/{id}")
     @PreAuthorize("@ps.hasPerm('perm:read')")
-    public Result<Permission> getById(@PathVariable Long id) {
+    public Result<PermissionVO> getById(@PathVariable Long id) {
         return permissionService.getById(id) == null
-                ? Result.<Permission>builder().message("查询成功！").data(permissionService.getById(id)).build()
+                ? Result.<PermissionVO>builder().message("查询成功！").data(permissionService.findPermById(id)).build()
                 : Result.error("权限不存在！");
     }
 
     @Operation(summary = "添加权限信息")
     @PostMapping("/add")
     @PreAuthorize("@ps.hasPerm('perm:create')")
-    public Result<Permission> add(@Valid @RequestBody PermissionDTO permission) {
+    public Result<PermissionVO> add(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.save(permission)
-                ? Result.<Permission>builder().message("添加成功！").data(permission).build()
+                ? Result.<PermissionVO>builder().message("添加成功！").data(permissionService.findPermById(permission.getId())).build()
                 : Result.error("添加失败！");
     }
 
     @Operation(summary = "修改权限信息")
     @PutMapping("/update")
     @PreAuthorize("@ps.hasPerm('perm:update')")
-    public Result<Permission> update(@Valid @RequestBody PermissionDTO permission) {
+    public Result<PermissionVO> update(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.updateById(permission)
-                ? Result.<Permission>builder().message("修改成功！").data(permission).build()
+                ? Result.<PermissionVO>builder().message("修改成功！").data(permissionService.findPermById(permission.getId())).build()
                 : Result.error("修改失败！");
     }
 
     @Operation(summary = "删除权限信息")
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("@ps.hasPerm('perm:delete')")
-    public Result<Permission> delete(@PathVariable Long id) {
+    public Result<Void> delete(@PathVariable Long id) {
         return permissionService.removeById(id)
-                ? Result.<Permission>builder().message("删除成功！").data(null).build()
+                ? Result.<Void>builder().message("删除成功！").data(null).build()
                 : Result.error("删除失败！");
     }
 

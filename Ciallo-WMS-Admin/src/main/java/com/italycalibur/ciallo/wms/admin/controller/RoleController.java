@@ -1,9 +1,8 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.RoleDTO;
+import com.italycalibur.ciallo.wms.admin.vo.RoleVO;
 import com.italycalibur.ciallo.wms.core.common.Result;
-import com.italycalibur.ciallo.wms.core.models.entity.Role;
-import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.admin.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,52 +31,52 @@ public class RoleController {
     @Operation(summary = "获取角色列表")
     @GetMapping("/list")
     @PreAuthorize("@ps.hasPerm('role:read')")
-    public Result<List<Role>> list() {
-        return Result.<List<Role>>builder().message("查询成功！").data(roleService.list()).build();
+    public Result<List<RoleVO>> list() {
+        return Result.<List<RoleVO>>builder().message("查询成功！").data(roleService.listAll()).build();
     }
 
     @Operation(summary = "根据主键获取角色信息")
     @GetMapping("/get/{id}")
     @PreAuthorize("@ps.hasPerm('role:read')")
-    public Result<Role> getById(@PathVariable Long id) {
+    public Result<RoleVO> getById(@PathVariable Long id) {
         return roleService.getById(id) == null
-                ? Result.<Role>builder().message("查询成功！").data(roleService.getById(id)).build()
+                ? Result.<RoleVO>builder().message("查询成功！").data(roleService.findRoleById(id)).build()
                 : Result.error("角色不存在！");
     }
 
     @Operation(summary = "添加角色信息")
     @PostMapping("/add")
     @PreAuthorize("@ps.hasPerm('role:create')")
-    public Result<Role> add(@Valid @RequestBody RoleDTO role) {
+    public Result<RoleVO> add(@Valid @RequestBody RoleDTO role) {
         return roleService.save(role)
-                ? Result.<Role>builder().message("添加成功！").data(role).build()
+                ? Result.<RoleVO>builder().message("添加成功！").data(roleService.findRoleById(role.getId())).build()
                 : Result.error("添加失败！");
     }
 
     @Operation(summary = "修改角色信息")
     @PutMapping("/update")
     @PreAuthorize("@ps.hasPerm('role:update')")
-    public Result<Role> update(@Valid @RequestBody RoleDTO role) {
+    public Result<RoleVO> update(@Valid @RequestBody RoleDTO role) {
         return roleService.updateById(role)
-                ? Result.<Role>builder().message("修改成功！").data(role).build()
+                ? Result.<RoleVO>builder().message("修改成功！").data(roleService.findRoleById(role.getId())).build()
                 : Result.error("修改失败！");
     }
 
     @Operation(summary = "删除角色信息")
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("@ps.hasPerm('role:delete')")
-    public Result<Role> delete(@PathVariable Long id) {
+    public Result<Void> delete(@PathVariable Long id) {
         return roleService.removeById(id)
-                ? Result.<Role>builder().message("删除成功！").data(null).build()
+                ? Result.<Void>builder().message("删除成功！").data(null).build()
                 : Result.error("删除失败！");
     }
 
     @Operation(summary = "给角色分配权限")
     @PutMapping("/assignPerm/{roleId}")
     @PreAuthorize("@ps.hasPerm('role:update')")
-    public Result<User> assignPerm(@PathVariable Long roleId, @RequestBody List<Long> permIds) {
+    public Result<Void> assignPerm(@PathVariable Long roleId, @RequestBody List<Long> permIds) {
         return roleService.assignPerm(roleId, permIds)
-                ? Result.<User>builder().message("分配成功！").data(null).build()
+                ? Result.<Void>builder().message("分配成功！").data(null).build()
                 : Result.error("分配失败！");
     }
 }
