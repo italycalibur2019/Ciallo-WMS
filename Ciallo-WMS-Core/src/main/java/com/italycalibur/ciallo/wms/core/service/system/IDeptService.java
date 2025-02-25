@@ -1,13 +1,14 @@
-package com.italycalibur.ciallo.wms.core.service;
+package com.italycalibur.ciallo.wms.core.service.system;
 
 import com.italycalibur.ciallo.wms.core.dto.DeptTree;
 import com.italycalibur.ciallo.wms.core.models.entity.Dept;
+import com.italycalibur.ciallo.wms.core.service.BaseService;
 
 import java.util.List;
 
 /**
  * <p>
- * 部门表 服务类
+ * 部门表 服务类基类
  * </p>
  *
  * @author italycalibur

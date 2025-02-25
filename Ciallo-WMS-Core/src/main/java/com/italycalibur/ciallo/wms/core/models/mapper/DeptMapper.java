@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author italycalibur
  * @since 2025-02-23 15:30:12
  */
-@DS("sys")
+@DS("system")
 public interface DeptMapper extends BaseMapper<Dept> {
 
 }

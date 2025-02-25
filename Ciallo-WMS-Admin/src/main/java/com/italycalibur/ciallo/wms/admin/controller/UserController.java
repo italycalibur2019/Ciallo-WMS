@@ -3,7 +3,7 @@ package com.italycalibur.ciallo.wms.admin.controller;
 import com.italycalibur.ciallo.wms.admin.dto.UserDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
-import com.italycalibur.ciallo.wms.core.service.IUserService;
+import com.italycalibur.ciallo.wms.admin.service.UserService;
 import com.italycalibur.ciallo.wms.core.utils.MD5Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,18 +27,18 @@ import java.util.List;
 @RequestMapping("/system/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService userService;
+    private final UserService userService;
 
     @Operation(summary = "获取用户列表")
     @GetMapping("/list")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:read')")
+    @PreAuthorize("@ps.hasPerm('user:read')")
     public Result<List<User>> list() {
         return Result.<List<User>>builder().message("查询成功！").data(userService.list()).build();
     }
 
     @Operation(summary = "根据主键获取用户信息")
     @GetMapping("/get/{id}")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:read')")
+    @PreAuthorize("@ps.hasPerm('user:read')")
     public Result<User> getById(@PathVariable Long id) {
         return userService.getById(id) == null
                 ? Result.<User>builder().message("查询成功！").data(userService.getById(id)).build()
@@ -47,7 +47,7 @@ public class UserController {
 
     @Operation(summary = "添加用户信息")
     @PostMapping("/add")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:create')")
+    @PreAuthorize("@ps.hasPerm('user:create')")
     public Result<User> add(@Valid @RequestBody UserDTO user) {
         user.setPassword(MD5Utils.md5Encode(user.getRawPassword()));
         return userService.save(user)
@@ -57,7 +57,7 @@ public class UserController {
 
     @Operation(summary = "修改用户信息")
     @PutMapping("/update")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:update')")
+    @PreAuthorize("@ps.hasPerm('user:update')")
     public Result<User> update(@Valid @RequestBody UserDTO user) {
         user.setPassword(MD5Utils.md5Encode(user.getRawPassword()));
         return userService.updateById(user)
@@ -67,7 +67,7 @@ public class UserController {
 
     @Operation(summary = "删除用户信息")
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:delete')")
+    @PreAuthorize("@ps.hasPerm('user:delete')")
     public Result<User> delete(@PathVariable Long id) {
         return userService.removeById(id)
                 ? Result.<User>builder().message("删除成功！").data(null).build()
@@ -76,7 +76,7 @@ public class UserController {
 
     @Operation(summary = "给用户分配角色")
     @PutMapping("/assignRole/{userId}")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('user:update')")
+    @PreAuthorize("@ps.hasPerm('user:update')")
     public Result<User> assignRole(@PathVariable Long userId, @RequestBody List<Long> roleIds) {
         return userService.assignRole(userId, roleIds)
                 ? Result.<User>builder().message("分配成功！").data(null).build()

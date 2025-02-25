@@ -1,9 +1,9 @@
-package com.italycalibur.ciallo.wms.core.service.impl;
+package com.italycalibur.ciallo.wms.core.service.system.impl;
 
 import com.italycalibur.ciallo.wms.core.exception.CialloException;
 import com.italycalibur.ciallo.wms.core.models.entity.Role;
 import com.italycalibur.ciallo.wms.core.models.mapper.RoleMapper;
-import com.italycalibur.ciallo.wms.core.service.IRoleService;
+import com.italycalibur.ciallo.wms.core.service.system.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,14 @@ import java.util.Objects;
 
 /**
  * <p>
- * 角色表 服务实现类
+ * 角色表 服务实现类基类
  * </p>
  *
  * @author italycalibur
  * @since 2025-02-23 15:30:13
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
+public abstract class BaseRoleService extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     @Override
     public boolean assignPerm(Long roleId, List<Long> permIds) {

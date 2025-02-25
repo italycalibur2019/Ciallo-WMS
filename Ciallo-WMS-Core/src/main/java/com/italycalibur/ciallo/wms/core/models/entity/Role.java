@@ -24,7 +24,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@TableName("sys.sys_role")
+@TableName("system.sys_role")
 @Schema(name = "Role", description = "角色表")
 public class Role extends BaseEntity implements Serializable {
 

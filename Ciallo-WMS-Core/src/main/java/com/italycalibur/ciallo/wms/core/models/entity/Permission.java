@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@TableName("sys.sys_permission")
+@TableName("system.sys_permission")
 @Schema(name = "Permission", description = "权限表")
 public class Permission extends BaseEntity implements Serializable {
 

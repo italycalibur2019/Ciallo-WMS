@@ -29,7 +29,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@TableName("sys.sys_user")
+@TableName("system.sys_user")
 @Schema(name = "User", description = "用户表")
 public class User extends BaseEntity implements Serializable, UserDetails {
 

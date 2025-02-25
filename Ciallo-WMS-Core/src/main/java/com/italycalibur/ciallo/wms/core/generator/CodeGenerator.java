@@ -19,7 +19,7 @@ import java.util.Collections;
  * @description: Mybatis Plus 代码生成器
  */
 public class CodeGenerator {
-    public static final String schema = "sys";
+    public static final String schema = "system";
 
     public static final String url = "jdbc:postgresql://localhost:5432/wms?currentSchema=" + schema;
 

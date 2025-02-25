@@ -2,9 +2,10 @@ package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.PermissionDTO;
 import com.italycalibur.ciallo.wms.core.common.Result;
+import com.italycalibur.ciallo.wms.core.dto.MenuTree;
 import com.italycalibur.ciallo.wms.core.enums.MenuTypeEnum;
 import com.italycalibur.ciallo.wms.core.models.entity.Permission;
-import com.italycalibur.ciallo.wms.core.service.IPermissionService;
+import com.italycalibur.ciallo.wms.admin.service.PermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,18 +28,18 @@ import java.util.List;
 @RequestMapping("/system/permission")
 @RequiredArgsConstructor
 public class PermissionController {
-    private final IPermissionService permissionService;
+    private final PermissionService permissionService;
 
     @Operation(summary = "获取权限列表")
     @GetMapping("/list")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('perm:read')")
+    @PreAuthorize("@ps.hasPerm('perm:read')")
     public Result<List<Permission>> list() {
         return Result.<List<Permission>>builder().message("查询成功！").data(permissionService.list()).build();
     }
 
     @Operation(summary = "根据主键获取权限信息")
     @GetMapping("/get/{id}")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('perm:read')")
+    @PreAuthorize("@ps.hasPerm('perm:read')")
     public Result<Permission> getById(@PathVariable Long id) {
         return permissionService.getById(id) == null
                 ? Result.<Permission>builder().message("查询成功！").data(permissionService.getById(id)).build()
@@ -47,7 +48,7 @@ public class PermissionController {
 
     @Operation(summary = "添加权限信息")
     @PostMapping("/add")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('perm:create')")
+    @PreAuthorize("@ps.hasPerm('perm:create')")
     public Result<Permission> add(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.save(permission)
@@ -57,7 +58,7 @@ public class PermissionController {
 
     @Operation(summary = "修改权限信息")
     @PutMapping("/update")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('perm:update')")
+    @PreAuthorize("@ps.hasPerm('perm:update')")
     public Result<Permission> update(@Valid @RequestBody PermissionDTO permission) {
         permission.setMenuType(MenuTypeEnum.valueOf(permission.getMenuTypeStr()));
         return permissionService.updateById(permission)
@@ -67,10 +68,17 @@ public class PermissionController {
 
     @Operation(summary = "删除权限信息")
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("@permissionServiceImpl.hasPerm('perm:delete')")
+    @PreAuthorize("@ps.hasPerm('perm:delete')")
     public Result<Permission> delete(@PathVariable Long id) {
         return permissionService.removeById(id)
                 ? Result.<Permission>builder().message("删除成功！").data(null).build()
                 : Result.error("删除失败！");
+    }
+
+    @Operation(summary = "获取权限菜单树形结构")
+    @GetMapping("/menuTree")
+    @PreAuthorize("@ps.hasPerm('menu:read')")
+    public Result<List<MenuTree>> menuTree() {
+        return Result.<List<MenuTree>>builder().message("查询成功！").data(permissionService.menuTree()).build();
     }
 }

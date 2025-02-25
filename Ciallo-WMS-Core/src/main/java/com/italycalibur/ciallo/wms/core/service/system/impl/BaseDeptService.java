@@ -1,10 +1,10 @@
-package com.italycalibur.ciallo.wms.core.service.impl;
+package com.italycalibur.ciallo.wms.core.service.system.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.italycalibur.ciallo.wms.core.dto.DeptTree;
 import com.italycalibur.ciallo.wms.core.models.entity.Dept;
 import com.italycalibur.ciallo.wms.core.models.mapper.DeptMapper;
-import com.italycalibur.ciallo.wms.core.service.IDeptService;
+import com.italycalibur.ciallo.wms.core.service.system.IDeptService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 部门表 服务实现类
+ * 部门表 服务实现类基类
  * </p>
  *
  * @author italycalibur
  * @since 2025-02-23 15:30:12
  */
 @Service
-public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements IDeptService {
+public abstract class BaseDeptService extends ServiceImpl<DeptMapper, Dept> implements IDeptService {
 
     @Override
     public List<DeptTree> deptTree() {
