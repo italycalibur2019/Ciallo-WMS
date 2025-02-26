@@ -2,8 +2,11 @@ package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.RoleDTO;
 import com.italycalibur.ciallo.wms.admin.vo.RoleVO;
+import com.italycalibur.ciallo.wms.core.common.PageData;
+import com.italycalibur.ciallo.wms.core.common.PageQueryRequest;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.admin.service.RoleService;
+import com.italycalibur.ciallo.wms.core.models.entity.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -78,5 +81,13 @@ public class RoleController {
         return roleService.assignPerm(roleId, permIds)
                 ? Result.<Void>builder().message("分配成功！").data(null).build()
                 : Result.error("分配失败！");
+    }
+
+
+    @Operation(summary = "分页查询角色信息")
+    @PostMapping("/page")
+    @PreAuthorize("@ps.hasPerm('role:read')")
+    public Result<PageData<Role>> page(@RequestBody PageQueryRequest<Role> queryRequest) {
+        return Result.<PageData<Role>>builder().message("查询成功！").data(PageData.of(roleService.queryPage(queryRequest))).build();
     }
 }

@@ -2,8 +2,11 @@ package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.UserDTO;
 import com.italycalibur.ciallo.wms.admin.vo.UserVO;
+import com.italycalibur.ciallo.wms.core.common.PageData;
+import com.italycalibur.ciallo.wms.core.common.PageQueryRequest;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.admin.service.UserService;
+import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.core.utils.MD5Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -81,5 +84,12 @@ public class UserController {
         return userService.assignRole(userId, roleIds)
                 ? Result.<Void>builder().message("分配成功！").data(null).build()
                 : Result.error("分配失败！");
+    }
+
+    @Operation(summary = "分页查询用户信息")
+    @PostMapping("/page")
+    @PreAuthorize("@ps.hasPerm('user:read')")
+    public Result<PageData<User>> page(@RequestBody PageQueryRequest<User> queryRequest) {
+        return Result.<PageData<User>>builder().message("查询成功！").data(PageData.of(userService.queryPage(queryRequest))).build();
     }
 }
