@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@TableName("system.sys_dept")
+@TableName("sys.sys_dept")
 @Schema(name = "Dept", description = "部门表")
 public class Dept extends BaseEntity implements Serializable {
 

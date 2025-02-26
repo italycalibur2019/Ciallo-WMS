@@ -1,9 +1,7 @@
 package com.italycalibur.ciallo.wms.admin.service.impl;
 
 import com.italycalibur.ciallo.wms.admin.service.PermissionService;
-import com.italycalibur.ciallo.wms.admin.vo.DeptVO;
 import com.italycalibur.ciallo.wms.admin.vo.PermissionVO;
-import com.italycalibur.ciallo.wms.core.models.entity.Dept;
 import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 import com.italycalibur.ciallo.wms.core.service.system.impl.BasePermissionService;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +15,7 @@ import java.util.List;
  * @date 2025-02-25 08:42:51
  * @version 1.0
  */
-@Service
+@Service("ps")
 public class PermissionServiceImpl extends BasePermissionService implements PermissionService {
     @Override
     public List<PermissionVO> listAll() {
