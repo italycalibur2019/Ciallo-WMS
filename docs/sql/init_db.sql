@@ -75,13 +75,13 @@ INSERT INTO sys.sys_user
 VALUES(1, 'admin', 'ec7805df356b9be271806d5de694c8f0', 101, 1, true, '2025-02-23 11:16:56.253', NULL);
 INSERT INTO sys.sys_user
 (id, username, "password", dept_id, company_id, is_enabled, create_time, update_time)
-VALUES(2, '李华', 'ec7805df356b9be271806d5de694c8f0', 102, 1, true, '2025-02-23 11:18:49.832', NULL);
+VALUES(2, 'lihua', 'ec7805df356b9be271806d5de694c8f0', 102, 1, true, '2025-02-23 11:18:49.832', NULL);
 INSERT INTO sys.sys_user
 (id, username, "password", dept_id, company_id, is_enabled, create_time, update_time)
-VALUES(3, '刘强', 'ec7805df356b9be271806d5de694c8f0', 103, 1, true, '2025-02-23 11:18:49.833', NULL);
+VALUES(3, 'zhanghong', 'ec7805df356b9be271806d5de694c8f0', 103, 1, true, '2025-02-23 11:18:49.833', NULL);
 INSERT INTO sys.sys_user
 (id, username, "password", dept_id, company_id, is_enabled, create_time, update_time)
-VALUES(4, '张红', 'ec7805df356b9be271806d5de694c8f0', 104, 1, true, '2025-02-23 11:18:49.834', NULL);
+VALUES(4, 'wangqiang', 'ec7805df356b9be271806d5de694c8f0', 104, 1, true, '2025-02-23 11:18:49.834', NULL);
 
 
 -- 角色表

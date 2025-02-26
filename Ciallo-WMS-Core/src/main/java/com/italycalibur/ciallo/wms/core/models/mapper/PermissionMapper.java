@@ -1,8 +1,8 @@
 package com.italycalibur.ciallo.wms.core.models.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.italycalibur.ciallo.wms.core.models.entity.Permission;
 
 
 /**
@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author italycalibur
  * @since 2025-02-23 15:30:13
  */
-@DS("system")
+@DS("sys")
 public interface PermissionMapper extends BaseMapper<Permission> {
 
 }

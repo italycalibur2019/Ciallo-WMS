@@ -1,8 +1,8 @@
 package com.italycalibur.ciallo.wms.core.models.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.italycalibur.ciallo.wms.core.models.entity.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
  * @author italycalibur
  * @since 2025-02-23 15:30:13
  */
-@DS("system")
+@DS("sys")
 public interface UserMapper extends BaseMapper<User> {
     User findByUsernameWithRoles(@Param("username") String username);
 

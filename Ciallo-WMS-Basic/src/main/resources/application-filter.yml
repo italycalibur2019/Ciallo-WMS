@@ -1,0 +1,9 @@
+ignored:
+  urls:
+      - /auth/**
+      - /error
+      - /doc.html
+      - /webjars/**
+      - /v3/**
+      - /swagger-resources/**
+      - /favicon.ico

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @since 2025-02-23 15:30:13
  */
 @Slf4j
-@Service("ps")
+@Service
 public abstract class BasePermissionService extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
 
     @Override
@@ -36,8 +36,8 @@ public abstract class BasePermissionService extends ServiceImpl<PermissionMapper
             log.warn("当前用户未登录");
             return false;
         }else {
-            log.info("当前用户：{}", auth.getName());
-            log.info("当前用户权限：{}", auth.getAuthorities());
+            log.debug("当前用户：{}", auth.getName());
+            log.debug("当前用户权限：{}", auth.getAuthorities());
             return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(permKey));
         }
     }
