@@ -313,3 +313,26 @@ VALUES(1, 15);
 INSERT INTO sys.sys_role_permission
 (role_id, perm_id)
 VALUES(1, 16);
+
+-- 登录日志
+CREATE TABLE "log".t_login_log (
+                                 id int8 NOT NULL,
+                                 username varchar(30) NULL,
+                                 ip varchar(50) NULL,
+                                 login_time timestamp NULL,
+                                 create_time timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                                 update_time timestamp NULL,
+                                 duration int8 NULL, -- 登录处理耗时
+                                 CONSTRAINT t_login_log_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE "log".t_login_log IS '登录日志';
+
+-- Column comments
+
+COMMENT ON COLUMN "log".t_login_log.id IS '主键';
+COMMENT ON COLUMN "log".t_login_log.username IS '用户名';
+COMMENT ON COLUMN "log".t_login_log.ip IS 'IP地址';
+COMMENT ON COLUMN "log".t_login_log.login_time IS '登录时间';
+COMMENT ON COLUMN "log".t_login_log.create_time IS '数据创建时间';
+COMMENT ON COLUMN "log".t_login_log.update_time IS '数据更新时间';
+COMMENT ON COLUMN "log".t_login_log.duration IS '登录处理耗时';
