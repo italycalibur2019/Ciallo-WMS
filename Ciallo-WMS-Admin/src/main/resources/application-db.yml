@@ -53,6 +53,12 @@ spring:
           username: postgres
           password: 123456
           type: com.alibaba.druid.pool.DruidDataSource
+        log:
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://localhost:5432/wms?currentSchema=log
+          username: postgres
+          password: 123456
+          type: com.alibaba.druid.pool.DruidDataSource
         basic:
           driver-class-name: org.postgresql.Driver
           url: jdbc:postgresql://localhost:5432/wms?currentSchema=basic
