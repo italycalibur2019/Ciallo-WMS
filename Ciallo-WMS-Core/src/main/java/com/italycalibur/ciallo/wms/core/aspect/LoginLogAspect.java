@@ -3,6 +3,7 @@ package com.italycalibur.ciallo.wms.core.aspect;
 import com.italycalibur.ciallo.wms.core.models.entity.LoginLog;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.core.service.log.ILoginLogService;
+import com.italycalibur.ciallo.wms.core.utils.IPUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -31,7 +32,6 @@ public class LoginLogAspect {
         Authentication authentication = (Authentication) joinPoint.getArgs()[2];
 
         User user = (User) authentication.getPrincipal();
-        String ip = request.getRemoteAddr();
 
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed(); // 执行原方法
@@ -40,7 +40,7 @@ public class LoginLogAspect {
         // 记录登录日志
         LoginLog loginLog = new LoginLog();
         loginLog.setUsername(user.getUsername());
-        loginLog.setIp(ip);
+        loginLog.setIp(IPUtils.getIpAddr(request));
         loginLog.setLoginTime(new Date());
         loginLog.setDuration(duration);
         logService.save(loginLog);
