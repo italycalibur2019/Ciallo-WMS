@@ -19,7 +19,7 @@ import java.util.Collections;
  * @description: Mybatis Plus 代码生成器
  */
 public class CodeGenerator {
-    public static final String schema = "log";
+    public static final String schema = "basic";
 
     public static final String url = "jdbc:postgresql://localhost:5432/wms?currentSchema=" + schema;
 
@@ -54,14 +54,13 @@ public class CodeGenerator {
                         .mapper("models.mapper")
                         .service("service")
                         .serviceImpl("service.impl")
-                        .xml("mapper")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, outPutPath + "/src/main/resources"))
                 )
                 // 策略配置
                 .strategyConfig(builder -> builder
                         .enableSchema()
-                        .addInclude("t_login_log")
-                        .addTablePrefix("t_")
+//                        .addInclude("t_login_log")
+                        .addTablePrefix("td_")
                         .entityBuilder()
                         .enableLombok()
                         .superClass(BaseEntity.class)

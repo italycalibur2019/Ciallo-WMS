@@ -7,9 +7,20 @@ package com.italycalibur.ciallo.wms.core.enums;
  * @description: 菜单类型枚举
  */
 public enum MenuTypeEnum {
-    // 目录，主菜单，子菜单，按钮
+    /**
+     * 目录
+     */
     CATALOG,
+    /**
+     * 主菜单
+     */
     MAIN_MENU,
+    /**
+     * 子菜单
+     */
     SUB_MENU,
+    /**
+     * 按钮
+     */
     BUTTON
 }
