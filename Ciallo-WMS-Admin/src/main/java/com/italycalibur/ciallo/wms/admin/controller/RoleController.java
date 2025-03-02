@@ -1,12 +1,11 @@
 package com.italycalibur.ciallo.wms.admin.controller;
 
 import com.italycalibur.ciallo.wms.admin.dto.RoleDTO;
+import com.italycalibur.ciallo.wms.admin.service.RoleService;
 import com.italycalibur.ciallo.wms.admin.vo.RoleVO;
 import com.italycalibur.ciallo.wms.core.common.PageData;
 import com.italycalibur.ciallo.wms.core.common.PageQueryRequest;
 import com.italycalibur.ciallo.wms.core.common.Result;
-import com.italycalibur.ciallo.wms.admin.service.RoleService;
-import com.italycalibur.ciallo.wms.core.models.entity.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -87,7 +86,7 @@ public class RoleController {
     @Operation(summary = "分页查询角色信息")
     @PostMapping("/page")
     @PreAuthorize("@ps.hasPerm('role:read')")
-    public Result<PageData<Role>> page(@RequestBody PageQueryRequest<Role> queryRequest) {
-        return Result.<PageData<Role>>builder().message("查询成功！").data(PageData.of(roleService.queryPage(queryRequest))).build();
+    public Result<PageData<RoleVO>> page(@RequestBody PageQueryRequest<RoleDTO> queryRequest) {
+        return Result.<PageData<RoleVO>>builder().message("查询成功！").data(roleService.queryPage(queryRequest)).build();
     }
 }
