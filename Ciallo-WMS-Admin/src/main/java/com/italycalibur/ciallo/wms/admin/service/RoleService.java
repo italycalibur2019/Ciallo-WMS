@@ -1,6 +1,9 @@
 package com.italycalibur.ciallo.wms.admin.service;
 
+import com.italycalibur.ciallo.wms.admin.dto.RoleDTO;
 import com.italycalibur.ciallo.wms.admin.vo.RoleVO;
+import com.italycalibur.ciallo.wms.core.common.PageData;
+import com.italycalibur.ciallo.wms.core.common.PageQueryRequest;
 import com.italycalibur.ciallo.wms.core.service.system.IRoleService;
 
 import java.util.List;
@@ -15,4 +18,6 @@ public interface RoleService extends IRoleService {
     List<RoleVO> listAll();
 
     RoleVO findRoleById(Long id);
+
+    PageData<RoleVO> queryPage(PageQueryRequest<RoleDTO> request);
 }
