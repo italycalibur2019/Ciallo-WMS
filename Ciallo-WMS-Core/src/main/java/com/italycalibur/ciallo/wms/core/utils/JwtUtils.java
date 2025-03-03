@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -29,10 +30,17 @@ public class JwtUtils {
 
     /**
      * 生成jwt到期时间
+     * @param flag 标记，用于生成不同到期时间的token
      * @return Date
      */
-    private Date generateExp() {
-        return new Date(System.currentTimeMillis() + jwtTokenProperty.getExpireTime());
+    private Date generateExp(String flag) {
+        return switch (flag) {
+            case CommonConstants.TOKEN_TYPE_ACCESS ->
+                    new Date(System.currentTimeMillis() + jwtTokenProperty.getExpireTime());
+            case CommonConstants.TOKEN_TYPE_REFRESH ->
+                    new Date(System.currentTimeMillis() + jwtTokenProperty.getRefreshExpireTime());
+            default -> null;
+        };
     }
 
     /**
@@ -53,12 +61,30 @@ public class JwtUtils {
         String token = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
-                .expiration(generateExp())
+                .expiration(generateExp(CommonConstants.TOKEN_TYPE_ACCESS))
                 .signWith(generateKey())
                 .compact();
         // redis存储token
-        redisUtils.set(token, token, jwtTokenProperty.getExpireTime() / 1000);
+        redisUtils.set(CommonConstants.TOKEN_TYPE_ACCESS + ":" + token.substring(0, 20), token, Duration.ofHours(24));
         return token;
+    }
+
+    /**
+     * 生成token
+     * 使用HS256算法, 密钥和有效时间从配置文件上取
+     * @param token 令牌
+     * @return String
+     */
+    public String generateToken(String token) {
+        String refreshToken = Jwts.builder()
+                .subject(getUsernameFromToken(token))
+                .issuedAt(new Date())
+                .expiration(generateExp(CommonConstants.TOKEN_TYPE_REFRESH))
+                .signWith(generateKey())
+                .compact();
+        // redis存储token
+        redisUtils.set(CommonConstants.TOKEN_TYPE_REFRESH + ":" + token.substring(0, 20), refreshToken, Duration.ofHours(24));
+        return refreshToken;
     }
 
     /**
@@ -81,7 +107,7 @@ public class JwtUtils {
      */
     public boolean validateToken(String token) {
         try {
-            if (redisUtils.exists(token) && redisUtils.getExpire(token) > 0) {
+            if (redisUtils.exists(CommonConstants.TOKEN_TYPE_ACCESS + ":" + token.substring(0, 20))) {
                 Jwts.parser().verifyWith(generateKey()).build().parseSignedClaims(token);
                 return true;
             }
@@ -110,8 +136,45 @@ public class JwtUtils {
      * @param token 令牌
      */
     public void addBlackListToken(String token) {
-        if (redisUtils.exists(token)) {
-            redisUtils.rename(token, CommonConstants.BLACK_LIST_TOKEN + token);
+        if (redisUtils.exists(CommonConstants.TOKEN_TYPE_ACCESS + ":" + token.substring(0, 20))) {
+            // 设置黑名单
+            redisUtils.rename(CommonConstants.TOKEN_TYPE_ACCESS + ":" + token.substring(0, 20),
+                    CommonConstants.BLACK_LIST_TOKEN + token.substring(0, 20));
+            // 删除刷新token
+            redisUtils.remove(CommonConstants.TOKEN_TYPE_REFRESH + ":" + token.substring(0, 20));
         }
+    }
+
+    /**
+     * 判断token是否在黑名单中
+     * @param token 令牌
+     * @return 返回 true, 否则返回 false
+     */
+    public boolean isInBlackList(String token) {
+        return redisUtils.exists(CommonConstants.BLACK_LIST_TOKEN + token.substring(0, 20));
+    }
+
+    /**
+     * 从redis中获取刷新token
+     * @param token 令牌
+     * @return String
+     */
+    public String getRefreshToken(String token) {
+        return redisUtils.find(CommonConstants.TOKEN_TYPE_REFRESH + ":" + token.substring(0, 20));
+    }
+
+    /**
+     * 判断token是否过期
+     * @param token 令牌
+     * @return 过期返回 true, 否则返回 false
+     */
+    public boolean isTokenExpired(String token) {
+        Date expiration = Jwts.parser()
+                .verifyWith(generateKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+        return expiration.before(new Date());
     }
 }

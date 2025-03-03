@@ -3,6 +3,7 @@ package com.italycalibur.ciallo.wms.core.security.handler;
 import com.italycalibur.ciallo.wms.core.common.Result;
 import com.italycalibur.ciallo.wms.core.models.entity.User;
 import com.italycalibur.ciallo.wms.core.utils.JwtUtils;
+import com.italycalibur.ciallo.wms.core.vo.AuthenticationVO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +13,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author dhr
@@ -33,10 +33,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         User userDetails = (User) authentication.getPrincipal();
 
         // 生成JWT令牌
-        String token = jwtUtils.generateToken(userDetails);
+        String accessToken = jwtUtils.generateToken(userDetails);
+        String refreshToken = jwtUtils.generateToken(accessToken);
 
         // 构造统一响应格式
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(Result.ok(Map.of("username", userDetails.getUsername(), "token", token)).asJsonString());
+        AuthenticationVO vo = new AuthenticationVO(userDetails.getUsername(), accessToken, refreshToken);
+        response.getWriter().write(Result.ok(vo).asJsonString());
     }
 }
