@@ -37,6 +37,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // 1. 从请求头提取Token
             String token = jwtUtils.getTokenFromRequest(request);
             if (token != null && jwtUtils.validateToken(token)) {
+                String refreshToken = jwtUtils.getRefreshToken(token);
+
+                // 2. 令牌过期，且未加入黑名单，自动刷新
+                if (jwtUtils.isTokenExpired(token) && !jwtUtils.isInBlackList(token)) {
+                    if (refreshToken == null) {
+                        filterChain.doFilter(request, response);
+                    }else {
+                        token = refreshToken;
+                    }
+                }
 
                 // 2. 解析用户名
                 String username = jwtUtils.getUsernameFromToken(token);

@@ -19,9 +19,13 @@ public class JwtTokenProperty {
      */
     private String secretKey;
     /**
-     * 过期时间（24小时）
+     * 过期时间（1小时）
      */
     private long expireTime;
+    /**
+     * 刷新过期时间（8小时）
+     */
+    private long refreshExpireTime;
     /**
      * 前缀
      */

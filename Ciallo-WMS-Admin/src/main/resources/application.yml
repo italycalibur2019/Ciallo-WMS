@@ -12,7 +12,8 @@ jwt:
   # 密钥字符串（256位）
   secret-key: XioEqEG2bHV/AkH6s9fVTFF2BIdvMoUL
   # token有效时间（单位：毫秒）
-  expire-time: 86400000
+  expire-time: 3600000
+  refresh-expire-time: 28800000
   # token前缀
   prefix: 'Bearer '
   # token头文件名
