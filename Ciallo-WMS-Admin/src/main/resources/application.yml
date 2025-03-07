@@ -7,6 +7,10 @@ spring:
     import:
       - classpath:application-filter.yml
       - classpath:application-db.yml
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 ## jwt 配置
 jwt:
   # 密钥字符串（256位）

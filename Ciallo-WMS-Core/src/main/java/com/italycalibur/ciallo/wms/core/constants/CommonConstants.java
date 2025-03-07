@@ -14,4 +14,8 @@ public class CommonConstants {
     //令牌类型
     public static final String TOKEN_TYPE_ACCESS = "access";
     public static final String TOKEN_TYPE_REFRESH = "refresh";
+    //响应对象常用头文件
+    public static final String EXPORT_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    //默认编码
+    public static final String DEFAULT_CHARSET_ENCODING = "utf-8";
 }
