@@ -1,7 +1,6 @@
 package com.italycalibur.ciallo.wms.core.models.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,7 +31,6 @@ public class CustomerSupplier extends BaseEntity implements Serializable {
     /**
      * 客商名称
      */
-    @TableId("name")
     @Schema(description = "客商名称")
     private String name;
 
