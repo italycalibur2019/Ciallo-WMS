@@ -1,7 +1,6 @@
 package com.italycalibur.ciallo.wms.core.models.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.italycalibur.ciallo.wms.core.models.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -47,7 +46,6 @@ public class StorageLocation extends BaseEntity implements Serializable {
     /**
      * 库位编号
      */
-    @TableId("location_code")
     @Schema(description = "库位编号")
     private String locationCode;
 
